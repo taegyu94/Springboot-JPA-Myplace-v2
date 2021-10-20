@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.Yoo.blogpractice.config.auth.PrincipalDetails;
 import com.Yoo.blogpractice.dto.ResponseDto;
 import com.Yoo.blogpractice.model.Board;
+import com.Yoo.blogpractice.model.Category;
 import com.Yoo.blogpractice.service.BoardService;
+import com.Yoo.blogpractice.service.CategoryService;
 
 
 @RestController
@@ -22,25 +24,30 @@ public class BoardApiController {
 	@Autowired
 	private BoardService boardService;
 
-	@PostMapping("/api/board")
-	public ResponseDto<Integer> save(@RequestBody Board board, @AuthenticationPrincipal PrincipalDetails principal) {
-		boardService.글쓰기(board, principal.getUser());
-		
+	@Autowired
+	private CategoryService categoryService;
+	
+	@PostMapping("/api/board/{categoryId}")
+	public ResponseDto<Integer> save(@RequestBody Board board, @AuthenticationPrincipal PrincipalDetails principal, @PathVariable int categoryId) {
+		boardService.글쓰기(board, principal.getUser(),categoryId);
 		return new ResponseDto<Integer>(HttpStatus.OK.value() , 1);
-		
+	}
+	
+	@PostMapping("/api/board/category")
+	public ResponseDto<Integer> categorySave(@RequestBody Category category, @AuthenticationPrincipal PrincipalDetails principal){
+		categoryService.카테저장(category, principal.getUser());
+		return new ResponseDto<Integer>(HttpStatus.OK.value() , 1);
 	}
 	
 	@PutMapping("/api/board/update/{id}")
 	public ResponseDto<Integer> update(@PathVariable int id ,@RequestBody Board board) {
 		boardService.글수정하기(id, board);
-		
 		return new ResponseDto<Integer>(HttpStatus.OK.value() , 1);
 	}
 	
 	@DeleteMapping("/api/board/delete/{id}")
 	public ResponseDto<Integer> delete(@PathVariable int id) {
 		boardService.글삭제하기(id);
-		
 		return new ResponseDto<Integer>(HttpStatus.OK.value() , 1);
 	}
 }

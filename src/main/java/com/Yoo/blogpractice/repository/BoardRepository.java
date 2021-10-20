@@ -12,4 +12,5 @@ import com.Yoo.blogpractice.model.Board;
 public interface BoardRepository extends JpaRepository<Board, Integer>{
 
 	public Page<Board> findAllByUserId(Pageable pageable , int  userId);
+	public Page<Board> findAllByCategoryId(Pageable pageable , int  categoryId);
 }

@@ -11,8 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.Yoo.blogpractice.dto.ReplySaveRequestDto;
 import com.Yoo.blogpractice.model.Board;
+import com.Yoo.blogpractice.model.Category;
 import com.Yoo.blogpractice.model.User;
 import com.Yoo.blogpractice.repository.BoardRepository;
+import com.Yoo.blogpractice.repository.CategoryRepository;
 import com.Yoo.blogpractice.repository.ReplyRepository;
 import com.Yoo.blogpractice.repository.UserRepository;
 
@@ -29,10 +31,18 @@ public class BoardService {
 	@Autowired
 	private ReplyRepository replyRepository;
 	
+	@Autowired
+	private CategoryRepository categoryRepository;
+	
 	@Transactional
-	public void 글쓰기(Board board, User user) {
+	public void 글쓰기(Board board, User user, int categoryId) {
+		Category category = categoryRepository.findById(categoryId)
+				.orElseThrow(()->{
+					return new IllegalArgumentException("카테고리 찾기 실패 : 카테고리를 찾을 수 없습니다.");
+				});
 		board.setUser(user);
 		board.setCount(0);
+		board.setCategory(category);
 		boardRepository.save(board);
 	}
 	
@@ -45,6 +55,12 @@ public class BoardService {
 		
 		return boardRepository.findAllByUserId(pageable, user.getId());
 	}
+	
+	@Transactional
+	public Page<Board> 카테고리찾기(Pageable pageable, int categoryId){
+		return boardRepository.findAllByCategoryId(pageable, categoryId);
+	}
+	
 	
 	@Transactional(readOnly = true)
 	public Board 글상세보기(int id) {

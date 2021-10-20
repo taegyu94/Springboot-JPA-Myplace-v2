@@ -40,10 +40,16 @@ public class Board {
 	@Lob		//대용량 데이터
 	private String content;
 	
-	@ManyToOne(fetch = FetchType.EAGER)	//무조건 가져오기 .   LAZY -> 필요하면 가져오기 ,  글 작성자는 무조건 있기때문에 가져와야한다.
-	@JsonIgnoreProperties({"board"})
+	@ManyToOne(fetch = FetchType.EAGER)	//무조건 가져오기 .   LAZY -> 필요하면 가져오기 , 기본값 : EAGER
+	@JsonIgnoreProperties({"board","category"})
 	@JoinColumn(name = "userId")
 	private User user;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JsonIgnoreProperties({"board","user"})
+	@JoinColumn(name = "categoryId")
+	private Category category;
+	
 	
 	@OneToMany(mappedBy = "board", fetch = FetchType.EAGER , cascade = CascadeType.REMOVE)	// 무조건 가져오기  >  기본값은 LAZY 이나 댓글을 무조건 가져오기를 원한다.  ,cascade 옵션으로 게시글을 지울때 댓글과 함께 삭제
 	@JsonIgnoreProperties({"board"})	//Reply의 board 로 인해 무한 참조 현상이 생기기때문에 이를 무시한다.

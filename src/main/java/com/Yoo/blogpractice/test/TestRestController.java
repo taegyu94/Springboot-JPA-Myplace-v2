@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Yoo.blogpractice.model.Board;
+import com.Yoo.blogpractice.model.Category;
 import com.Yoo.blogpractice.model.User;
 import com.Yoo.blogpractice.repository.BoardRepository;
 import com.Yoo.blogpractice.service.BoardService;
+import com.Yoo.blogpractice.service.CategoryService;
 import com.Yoo.blogpractice.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,7 +28,16 @@ public class TestRestController {
 
 	private final UserService userService;
 	private final BoardService boardService;
-
+	private final CategoryService categoryService;
+	
+	@GetMapping("/test/{blogname}/category/{id}")
+	public Page<Board> userHome(Model model,@PathVariable int id, @PageableDefault(size = 5 , sort = "id" , direction = Sort.Direction.DESC) Pageable pageable) {
+		Page<Board> pagingBoard = boardService.카테고리찾기(pageable,id);
+		model.addAttribute("cateboards",pagingBoard);
+		return pagingBoard;
+		//return "/myblog/categoryHomeForm";
+	}
+	
 	@ModelAttribute("user")
 	public User commonObject(@PathVariable String blogname, @PageableDefault(size = 5 , sort = "id" , direction = Sort.Direction.DESC) Pageable pageable) {
 		Page<Board> pagingBoard = boardService.글목록(pageable,blogname);
@@ -58,6 +69,18 @@ public class TestRestController {
 		model.addAttribute("first", first);
 		model.addAttribute("last", last);
 		//return user;
+	}
+	
+	
+	@GetMapping("/test/category/{blogname}")
+	public User userCategory(Model model,@PathVariable String blogname, @PageableDefault(size = 2 , sort = "id" , direction = Sort.Direction.DESC) Pageable pageable) {
+		Page<Board> pagingBoard = boardService.글목록(pageable,blogname);
+		List<Board> listBoard = pagingBoard.getContent();
+		User user =  userService.블로그주인찾기(blogname);
+		List<Category> category = categoryService.카테고리찾기(user.getId());
+		user.setBoard(listBoard);
+		user.setCategory(category);
+		return user;
 	}
 	
 //	@GetMapping("/test/{blogname}")

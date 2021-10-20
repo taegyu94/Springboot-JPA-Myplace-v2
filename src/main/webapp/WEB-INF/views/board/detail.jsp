@@ -12,8 +12,9 @@
 	
 	<br /><br />
 	<div>
-		글 번호 : <span id="id"><i>${board.id} </i></span> 
-		작성자 : <span><i>${board.user.username} </i></span>
+		글 번호 : <span id="id"><i>${board.id}</i></span> 
+		작성자 : <span><i>${board.user.username}</i></span>
+		카테고리 : <span><i>${board.category.subject}</i></span>
 	</div>
 	<br />
 	<div>
@@ -30,8 +31,24 @@
 			<input type="hidden" id="userId" value="${principal.user.id }" />
 			<input type="hidden" id="boardId" value="${board.id }" />
 			<input type="hidden" id="blogname" value="${board.user.blogname }" />
-			<div class="card-body"><textarea id="reply-content"  class="form-control" rows="1" ></textarea></div>
-			<div class="card-footer"><button id="btn-reply-save" type="button" class="btn btn-primary">등록</button></div>
+			<c:choose>
+				<c:when test="${empty principal }">
+					<div class="card-body">
+						<textarea id="reply-content" class="form-control" rows="1"  placeholder="로그인 후 이용가능합니다!"></textarea>
+					</div>
+					<div class="card-footer">
+						<button id="btn-reply-save" type="button" class="btn btn-primary disabled">등록</button>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="card-body">
+						<textarea id="reply-content" class="form-control" rows="1"  placeholder="댓글을 입력하세요!"></textarea>
+					</div>
+					<div class="card-footer">
+						<button id="btn-reply-save" type="button" class="btn btn-primary">등록</button>
+					</div>
+				</c:otherwise>
+			</c:choose>
 		</form>
 	</div>
 	<br/>
@@ -44,7 +61,7 @@
   					<div>${reply.content}</div>
   					<div class="d-flex">
   						<div class="font-italic">작성자 : ${reply.user.username} &nbsp;</div>
-  						<c:if test="${reply.user.id == principal.user.id }">
+  						<c:if test="${reply.user.id == principal.user.id or board.user.id == principal.user.id}">
   							<button onclick="index.replyDelete(${board.id}, ${reply.id}, '${board.user.blogname }')" class="badge">삭제</button>
   						</c:if>
   						

@@ -9,20 +9,22 @@ let index = {
 		$("#btn-reply-save").on("click", () => {
 			this.replySave();
 		});
-		
+		$("#btn-category-save").on("click", () => {
+			this.categorySave();
+		});
 	},
 
 	save: function() {
 		let blogname = $("#blogname").val();
-		
+		let categoryId = $("#categoryId").val();
 		let data = {
 			title: $("#title").val(),
 			content: $("#content").val(),
 		};
-
+		console.log(data);
 		$.ajax({
 			type: "POST",
-			url: "/api/board",
+			url: "/api/board/"+categoryId,
 			data: JSON.stringify(data),
 			contentType: "application/json; charset=utf-8",
 			dataType: "json"
@@ -110,7 +112,30 @@ let index = {
 		}).fail(function(error) {
 			alert(JSON.stringify(error));
 		});
+	},
+	
+	categorySave: function() {
+		let blogname = $("#blogname").val();
+		
+		let data = {
+			subject : $("#subject").val()
+		};
+		console.log(data);
+		$.ajax({
+			type: "POST",
+			url: "/api/board/category",
+			data: JSON.stringify(data),
+			contentType: "application/json; charset=utf-8",
+			dataType: "json"
+		}).done(function(resp) {
+			alert("카테고리 저장이 완료되었습니다.");
+			location.href = `/board/category/`+blogname;
+			console.log(resp);
+		}).fail(function(error) {
+			alert(JSON.stringify(error));
+		});
 	}
+	
 	
 }
 

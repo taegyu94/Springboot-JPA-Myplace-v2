@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.Yoo.blogpractice.model.Board;
+import com.Yoo.blogpractice.model.Category;
 import com.Yoo.blogpractice.model.User;
 import com.Yoo.blogpractice.service.BoardService;
+import com.Yoo.blogpractice.service.CategoryService;
 import com.Yoo.blogpractice.service.UserService;
 
 
@@ -28,13 +30,17 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
+	@Autowired
+	private CategoryService categoryService;
 	
 	@ModelAttribute("user")
 	public User commonObject(@PathVariable String blogname, @PageableDefault(size = 5 , sort = "id" , direction = Sort.Direction.DESC) Pageable pageable) {
 		Page<Board> pagingBoard = boardService.글목록(pageable,blogname);
 		List<Board> listBoard = pagingBoard.getContent();
 		User user =  userService.블로그주인찾기(blogname);
+		List<Category> category = categoryService.카테고리찾기(user.getId());
 		user.setBoard(listBoard);
+		user.setCategory(category);
 		return user;
 	}
 	
@@ -43,9 +49,6 @@ public class BoardController {
 	@GetMapping("/home/{blogname}")
 	public String userHome(Model model,@PathVariable String blogname, @PageableDefault(size = 5 , sort = "id" , direction = Sort.Direction.DESC) Pageable pageable) {
 		Page<Board> pagingBoard = boardService.글목록(pageable,blogname);
-//		List<Board> listBoard = pagingBoard.getContent();
-//		User user =  userService.블로그주인찾기(blogname);
-//		user.setBoard(listBoard);
 		boolean last = false;
 		boolean first = false;
 		int pageNumber = pagingBoard.getNumber();	//현재페이지
@@ -60,8 +63,15 @@ public class BoardController {
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("first", first);
 		model.addAttribute("last", last);
-//		model.addAttribute("user", user);
 		return "/myblog/myhome";
+	}
+	
+	@GetMapping("/home/{blogname}/{subject}/{id}")
+	public String userCategoryHome(Model model,@PathVariable String subject, @PathVariable int id, @PageableDefault(size = 5 , sort = "id" , direction = Sort.Direction.DESC) Pageable pageable) {
+		Page<Board> pagingBoard = boardService.카테고리찾기(pageable,id);
+		model.addAttribute("cateboards",pagingBoard);
+		model.addAttribute("catesubject",subject);
+		return "/myblog/categoryHomeForm";
 	}
 	
 	@GetMapping("/board/{blogname}/{id}")	// 글쓰기가 가능한 곳은 자신의 블로그.
@@ -79,6 +89,11 @@ public class BoardController {
 	@GetMapping("/board/{blogname}/saveForm")
 	public String boardSaveForm() {
 		return "/board/saveForm";
+	}
+	
+	@GetMapping("/board/category/{blogname}")
+	public String categorySaveForm() {
+		return "/board/CategorySaveForm";
 	}
 	
 	

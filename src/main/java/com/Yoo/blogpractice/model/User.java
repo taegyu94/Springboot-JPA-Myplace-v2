@@ -53,6 +53,11 @@ public class User {
 	@OrderBy("id desc")
 	private List<Board> board;
 	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties({"user","board"})
+	@OrderBy("id asc") // 오름차순  먼저쓴게 위로
+	private List<Category> category;
+	
 	@Enumerated(EnumType.STRING)
 	private RoleType role;
 	

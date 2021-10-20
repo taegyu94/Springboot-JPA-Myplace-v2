@@ -1,7 +1,9 @@
 package com.Yoo.blogpractice.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +12,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -21,23 +27,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Reply {
+public class Category {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(nullable = false, length = 300)
-	private String content;
-	
-	@ManyToOne(fetch = FetchType.EAGER)	//패치옵션 기본값 : EAGER
-	@JoinColumn(name="userId")
-	@JsonIgnoreProperties({"board","category"})
-	private User user;
+	@Column(nullable = false , length = 40)
+	private String subject;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="boardId")
-	private Board board;
+	@JsonIgnoreProperties({"board","category"})
+	@JoinColumn(name = "userId")
+	private User user;
 	
+	@OneToMany(mappedBy = "category", fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties({"category","user"})
+	@OrderBy("id desc")
+	private List<Board> board;
+	
+	@CreationTimestamp
 	private Timestamp createDate;
 }

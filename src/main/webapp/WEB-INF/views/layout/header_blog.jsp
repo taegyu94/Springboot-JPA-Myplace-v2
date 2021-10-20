@@ -24,19 +24,9 @@
 </head>
 <body>
 	<div class="container-fluid text-center">
-		<c:choose>
-			<c:when test="${empty principal }">
-				<h1>
-					<a class="nav-link" href="/loginForm">누구의블로그?</a>
-				</h1>
-			</c:when>
-			<c:otherwise>
 				<h1>
 					<a class="nav-link" href="/home/${user.blogname}">${user.blogname}의 블로그</a>
 				</h1>
-			</c:otherwise>
-		</c:choose>
-
 	</div>
 	<br />
 
@@ -46,10 +36,17 @@
 			<button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
 		</div>
 		<div class="offcanvas-body">
-			<p>Some text lorem ipsum.</p>
-			<p>Some text lorem ipsum.</p>
-			<p>Some text lorem ipsum.</p>
-			<button class="btn btn-secondary" type="button">A Button</button>
+			<ul id="category-box" class="list-group-flush">
+				<c:forEach var="category" items="${user.category}">
+					<li id="category-${category.id}" class="list-group-item d-flex justify-content-between">
+						<div><a class = "nav-link" href = "/home/${user.blogname}/${category.subject}/${category.id}">${category.subject}</a></div>
+					</li>
+				</c:forEach>
+			</ul>
+			<br/>
+			<c:if test="${user.id==principal.user.id}">
+				<a href ="/board/category/${user.blogname}"  class = "btn btn-info">카테고리 수정 및 추가하기</a>
+			</c:if>
 		</div>
 	</div>
 
@@ -66,7 +63,14 @@
 				<c:if test="${user.id==principal.user.id}">
 					<li class="nav-item"><a class="nav-link" href="/board/${user.blogname }/saveForm">글쓰기</a></li>
 				</c:if>
-				<li class="nav-item"><a class="nav-link" href="/logout">로그아웃</a></li>
+				<c:choose>
+					<c:when test="${empty principal }">
+							<li class="nav-item"><a class="nav-link" href="/loginForm">로그인</a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="nav-item"><a class="nav-link" href="/logout">로그아웃</a></li>
+					</c:otherwise>
+				</c:choose>
 			</ul>
 		</div>
 
