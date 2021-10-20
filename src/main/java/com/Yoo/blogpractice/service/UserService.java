@@ -3,11 +3,12 @@ package com.Yoo.blogpractice.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.Yoo.blogpractice.model.Board;
 import com.Yoo.blogpractice.model.RoleType;
 import com.Yoo.blogpractice.model.User;
 import com.Yoo.blogpractice.repository.UserRepository;
@@ -37,5 +38,10 @@ public class UserService {
 				.orElseThrow(()->{
 					return new IllegalArgumentException("blog 진입 실패 : 블로그를 찾을 수 없습니다.");
 				});
+	}
+	
+	@Transactional(readOnly = true)
+	public Page<User> 모든유저찾기(Pageable pageable){
+		return userRepository.findAll(pageable);
 	}
 }

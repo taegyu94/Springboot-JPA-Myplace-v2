@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Myblog</title>
+<title>MySpace</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -40,9 +40,9 @@
 					<li class="nav-item"><a class="nav-link" href="javascript:void(0)">Link</a></li> -->
 				</ul>
 				<form class="d-flex">
-					<input class="form-control me-2" type="text" placeholder="Search">
-					<button class="btn btn-primary" type="button">Search</button>
+					<input class="form-control me-4" type="text" placeholder="블로그 이름을 입력하세요" id = "searchBlogname">
 				</form>
+					<button id="btn-search" class="btn btn-primary" type="button">Search</button>
 			</div>
 		</div>
 	</nav>

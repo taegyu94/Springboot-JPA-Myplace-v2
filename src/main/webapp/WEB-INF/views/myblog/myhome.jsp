@@ -6,16 +6,16 @@
 
 <div class="container">
 	<h1 align="center">전체글</h1>
-	<br/>
+	<br />
 	<c:forEach var="board" items="${user.board}">
-		<div class="card m-2">
+		<div class="card ">
 			<div class="card-body">
 				<h4 class="card-title">${board.title}</h4>
 				<a href="/board/${board.user.blogname }/${board.id}" class="btn btn-primary">상세보기</a>
 			</div>
 		</div>
 	</c:forEach>
-	
+
 	<ul class="pagination justify-content-center">
 		<c:choose>
 			<c:when test="${first}">
@@ -33,7 +33,7 @@
 				<li class="page-item"><a class="page-link" href="?page=${pageNumber+1}">Next</a></li>
 			</c:otherwise>
 		</c:choose>
-	</ul>	
+	</ul>
 
 
 </div>

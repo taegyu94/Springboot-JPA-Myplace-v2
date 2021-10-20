@@ -3,6 +3,10 @@ let index = {
 		$("#btn-save").on("click",()=>{
 			this.save();
 		});
+		$("#btn-search").on("click",()=>{
+			this.search();
+		});
+		
 	},
 	
 	save : function(){
@@ -26,6 +30,26 @@ let index = {
 			else{
 				alert("회원가입이 완료되었습니다.");
 				location.href = "/";
+			}
+			console.log(resp);
+		}).fail(function(error){
+			alert(JSON.stringify(error));
+		});
+	},
+	
+	search : function(){
+		
+		let searchBlogname = $("#searchBlogname").val();
+		
+		$.ajax({
+			type : "GET",
+			url : "/auth/searchProc/"+searchBlogname,
+		}).done(function(resp){
+			if(resp.status === 500){
+				alert("블로그찾기에 실패하였습니다.");
+			}
+			else{
+				location.href = "/search/"+searchBlogname;
 			}
 			console.log(resp);
 		}).fail(function(error){

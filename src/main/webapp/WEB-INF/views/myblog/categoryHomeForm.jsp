@@ -6,7 +6,7 @@
 
 <div class="container">
 	<h1 align="center">${catesubject}</h1>
-	<br/>
+	<br />
 	<c:forEach var="cateboard" items="${cateboards.content}">
 		<div class="card m-2">
 			<div class="card-body">
@@ -15,7 +15,7 @@
 			</div>
 		</div>
 	</c:forEach>
-	
+
 	<ul class="pagination justify-content-center">
 		<c:choose>
 			<c:when test="${cateboards.first}">
@@ -33,7 +33,7 @@
 				<li class="page-item"><a class="page-link" href="?page=${cateboards.number+1}">Next</a></li>
 			</c:otherwise>
 		</c:choose>
-	</ul>	
+	</ul>
 
 
 </div>

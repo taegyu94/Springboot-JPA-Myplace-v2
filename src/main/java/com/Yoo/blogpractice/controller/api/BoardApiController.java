@@ -50,4 +50,10 @@ public class BoardApiController {
 		boardService.글삭제하기(id);
 		return new ResponseDto<Integer>(HttpStatus.OK.value() , 1);
 	}
+	
+	@DeleteMapping("/api/categorydelete/{categoryId}")
+	public ResponseDto<Integer> cateDelete(@PathVariable int categoryId){
+		categoryService.카테삭제(categoryId);
+		return new ResponseDto<Integer>(HttpStatus.OK.value() , 1);
+	}
 }

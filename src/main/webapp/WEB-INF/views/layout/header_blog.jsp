@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Myblog</title>
+<title>MySpace</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -23,7 +23,7 @@
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
 </head>
 <body>
-	<div class="container-fluid text-center">
+	<div class="container text-center">
 				<h1>
 					<a class="nav-link" href="/home/${user.blogname}">${user.blogname}의 블로그</a>
 				</h1>
@@ -50,10 +50,11 @@
 		</div>
 	</div>
 
-	<div class="row">
+	<div class="row container-fluid mt-3">
 		<div class="col-sm-6">
-			<div class="container-fluid mt-3">
+			<div class="container">
 				<button class="btn btn-primary " type="button" data-bs-toggle="offcanvas" data-bs-target="#menubar">MENU</button>
+				<a class="btn btn-info " type="button"  href = "/">MySpace</a>
 			</div>
 		</div>
 

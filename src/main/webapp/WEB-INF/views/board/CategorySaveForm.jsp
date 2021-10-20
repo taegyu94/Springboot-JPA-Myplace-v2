@@ -18,7 +18,7 @@
 					<li id="category-${category.id}" class="list-group-item d-flex justify-content-between">
 						<div>${category.subject}</div>
 						<div class="d-flex">
-							<button onclick="index.replyDelete(${board.id}, ${reply.id}, '${board.user.blogname }')" class="btn btn-danger btn-sm">삭제</button>						
+							<button onclick="index.cateDelete(${category.id},'${user.blogname}')" class="btn btn-danger btn-sm">삭제</button>						
 						</div>
 					</li>
 				</c:forEach>

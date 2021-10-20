@@ -134,8 +134,24 @@ let index = {
 		}).fail(function(error) {
 			alert(JSON.stringify(error));
 		});
-	}
+	},
 	
+	cateDelete : function(categoryId, blogname) {
+		
+		console.log(categoryId);
+		console.log(blogname);
+		$.ajax({
+			type: "DELETE",
+			url: `/api/categorydelete/${categoryId}`,
+			dataType: "json"
+		}).done(function(resp) {
+			alert("카테고리 삭제가 완료되었습니다.");
+			location.href = `/board/category/${blogname}`;
+			console.log(resp);
+		}).fail(function(error) {
+			alert(JSON.stringify(error));
+		});
+	}
 	
 }
 
